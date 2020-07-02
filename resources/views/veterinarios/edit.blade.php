@@ -6,7 +6,7 @@
 
 @section('conteudo')
 
-    <form action="{{ route('especialidades.update', $dados['id']) }}" method="POST">
+    <form action="{{ route('veterinarios.update', $dados['id']) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
