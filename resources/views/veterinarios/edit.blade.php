@@ -13,12 +13,22 @@
             <div class='column'>
                 <div class='col-sm-12'>
                     <label>Nome</label>
-                    <input type="text" class="form-control" name="nome" value="{{$dados['nome']}}">
+                    <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" name="nome" value="{{$dados['nome']}}">
+                    @if ($errors->has('nome'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('nome') }}
+                        </div>
+                    @endif
                 </div>
                 <div class="row mt-2">
                     <div class='col-sm-6'>
                         <label>CRMV</label>
-                        <input type="text" class="form-control" name="crmv" value="{{$dados['crmv']}}">
+                        <input type="text" class="form-control {{ $errors->has('crmv') ? 'is-invalid' : '' }}" name="crmv" value="{{$dados['crmv']}}">
+                        @if ($errors->has('crmv'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('crmv') }}
+                        </div>
+                    @endif
                     </div>
                     <div class='col-sm-6'>
                         <label>Especialidades</label>

@@ -13,15 +13,30 @@
             <div class='row'>
                 <div class='col-sm-4'>
                     <label>Nome</label>
-                    <input type="text" class="form-control" name="nome" value="{{$dados['nome']}}">
+                    <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" name="nome" value="{{$dados['nome']}}">
+                    @if ($errors->has('nome'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('nome') }}
+                        </div>
+                    @endif
                 </div>
                 <div class='col-sm-4'>
                     <label>E-mail</label>
-                    <input type="email" class="form-control" name="email" value="{{$dados['email']}}">
+                    <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" name="email" value="{{$dados['email']}}">
+                    @if ($errors->has('email'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('email') }}
+                        </div>
+                    @endif
                 </div>
                 <div class='col-sm-4'>
                     <label>Telefone</label>
-                    <input type="text" class="form-control" name="telefone" value="{{$dados['telefone']}}">
+                    <input type="text" class="form-control {{ $errors->has('telefone') ? 'is-invalid' : '' }}" name="telefone" value="{{$dados['telefone']}}">
+                    @if ($errors->has('telefone'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('telefone') }}
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class='row' style="margin-top:20px">

@@ -13,11 +13,21 @@
             <div class='column'>
                 <div class='col-sm-12'>
                     <label>Nome</label>
-                    <input type="text" class="form-control" name="nome" value="{{$dados['nome']}}">
+                    <input type="text" class="form-control {{ $errors->has('nome') ? 'is-invalid' : '' }}" name="nome" value="{{$dados['nome']}}">
+                    @if ($errors->has('nome'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('nome') }}
+                        </div>
+                    @endif
                 </div>
                 <div class='col-sm-12 mt-2'>
                     <label>Descrição</label>
-                    <input type="text" class="form-control" name="descricao" value="{{$dados['descricao']}}">
+                    <input type="text" class="form-control {{ $errors->has('descricao') ? 'is-invalid' : '' }}" name="descricao" value="{{$dados['descricao']}}">
+                    @if ($errors->has('descricao'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('descricao') }}
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class='row' style="margin-top:20px">
