@@ -1,5 +1,5 @@
 <div class="table-responsive" style="overflow-x: visible; overflow-y: visible;">
-    <table class='table table-striped'>
+    <table class='table table-striped' id="tabela">
         <thead>
             <tr style="text-align: center">
                 @foreach ($header as $item)
@@ -15,9 +15,9 @@
                     <td>{{ $item['email'] }}</td>
                     <td>{{ $item['telefone'] }}</td>
                     <td>
-                        <a href="{{ route('clientes.show', $item['id']) }}"><img src="{{ asset('img/icons/info.svg') }}"></a>
-                        <a href="{{ route('clientes.edit', $item['id']) }}"><img src="{{ asset('img/icons/edit.svg') }}"></a>
-                        <a href="javascript:form_{{$item['id']}}.submit()"><img src="{{ asset('img/icons/delete.png') }}"></a>
+                        <a nohref style="cursor: pointer" onclick="visualizar('{{ $item['id'] }}')"><img src="{{ asset('img/icons/info.svg') }}"></a>
+                        <a nohref style="cursor: pointer" onclick="editar('{{ $item['id'] }}')"><img src="{{ asset('img/icons/edit.svg') }}"></a>
+                        <a nohref style="cursor: pointer" onclick="remover('{{ $item['id'] }}', '{{ $item['nome'] }}')"><img src="{{ asset('img/icons/delete.png') }}"></a>
                     </td>
                 </tr>
                 <form action="{{ route('clientes.destroy', $item['id']) }}"
@@ -28,5 +28,6 @@
             @endforeach
         </tbody>
     </table>
+
 </div>
 

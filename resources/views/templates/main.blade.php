@@ -51,5 +51,7 @@
     <footer>
         <b>&copy; 2020 - Gustavo Galdino de Camargo.</b>
     </footer>
-    <script scr='{{asset('js/app.js')}}' type='text/javascript'></script>
+    <script src="{{asset('js/app.js')}}" type='text/javascript'></script>
+    @yield('script')
+
 </html>

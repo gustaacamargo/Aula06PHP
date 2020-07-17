@@ -40,27 +40,13 @@ class Veterinarios extends Controller
      */
     public function store(Request $request)
     {
-        $regras = [
-            'nome' => 'required|max:100|min:10',
-            'crmv' => 'required|max:6|min:6',
-        ];
-        $msgs = [
-            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
-            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
-            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!"
-        ];
-
-        $request->validate($regras, $msgs);
-
-        $novo = new Veterinario([
-            'nome' => $request->nome,
-            'crmv' => $request->crmv,
-            'especialidade_id' => $request->especialidades
-        ]);
-
+        $novo = new Veterinario();
+        $novo->nome = $request->input('nome');
+        $novo->crmv = $request->input('crmv');
+        $novo->especialidade_id = $request->input('especialidades');
         $novo->save();
 
-        return redirect()->route('veterinarios.index');
+        return json_encode($novo);
     }
 
     /**
@@ -72,8 +58,10 @@ class Veterinarios extends Controller
     public function show($id)
     {
         $dados = Veterinario::findOrFail($id);
-
-        return view('veterinarios.show', compact('dados'));
+        if(isset($dados)) {
+            return json_encode($dados);
+        }
+        return response('Veterinários nao encontrado', 404);
     }
 
     /**
@@ -99,26 +87,17 @@ class Veterinarios extends Controller
      */
     public function update(Request $request, $id)
     {
-        $regras = [
-            'nome' => 'required|max:100|min:10',
-            'crmv' => 'required|max:6|min:6',
-        ];
-        $msgs = [
-            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
-            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
-            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!"
-        ];
-
-        $request->validate($regras, $msgs);
-        
         $veterinario = Veterinario::findOrFail($id);
-        $veterinario->nome = $request->nome;
-        $veterinario->crmv = $request->crmv;
-        $veterinario->especialidade_id = $request->especialidades;
+        if(isset($veterinario)) {
+            $veterinario->nome = $request->input('nome');
+            $veterinario->crmv = $request->input('crmv');
+            $veterinario->especialidade_id = $request->input('especialidades');
 
-        $veterinario->save();
+            $veterinario->save();
 
-        return redirect()->route('veterinarios.index');
+            return json_encode($veterinario);
+        }
+        return response('Veterinário nao encontrado', 404);
     }
 
     /**
@@ -129,6 +108,12 @@ class Veterinarios extends Controller
      */
     public function destroy($id)
     {
-        //
+        $veterinario = Veterinario::findOrFail($id);
+        if(isset($veterinario)) {
+            $veterinario->delete();
+            return response('OK', 200);
+        }
+
+        return response('Veterinário não encontrado', 404);
     }
 }

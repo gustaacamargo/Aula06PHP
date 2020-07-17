@@ -25,10 +25,7 @@ class Clientes extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('clientes.create');
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -39,28 +36,13 @@ class Clientes extends Controller
 
     public function store(Request $request)
     {
-        $regras = [
-            'nome' => 'required|max:100|min:10',
-            'email' => 'required|unique:clientes',
-            'telefone' => 'required|max:13|min:11',
-        ];
-        $msgs = [
-            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
-            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
-            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!"
-        ];
-
-        $request->validate($regras, $msgs);
-
-        $novo = new Cliente([
-            'nome' => $request->nome,
-            'email' => $request->email,
-            'telefone' => $request->telefone
-        ]);
-
+        $novo = new Cliente();
+        $novo->nome = $request->input('nome');
+        $novo->email = $request->input('email');
+        $novo->telefone = $request->input('telefone');
         $novo->save();
 
-        return redirect()->route('clientes.index');
+        return json_encode($novo);
     }
 
     /**
@@ -72,8 +54,10 @@ class Clientes extends Controller
     public function show($id)
     {
         $dados = Cliente::findOrFail($id);
-
-        return view('clientes.show', compact('dados'));
+        if(isset($dados)) {
+            return json_encode($dados);
+        }
+        return response('Cliente nao encontrado', 404);
     }
 
     /**
@@ -98,27 +82,17 @@ class Clientes extends Controller
      */
     public function update(Request $request, $id)
     {
-        $regras = [
-            'nome' => 'required|max:100|min:10',
-            'email' => 'required',
-            'telefone' => 'required|max:13|min:11',
-        ];
-        $msgs = [
-            "required" => "O preenchimento do campo [:attribute] é obrigatório!",
-            "max" => "O campo [:attribute] possui tamanho máximo de [:max] caracteres!",
-            "min" => "O campo [:attribute] possui tamanho mínimo de [:min] caracteres!"
-        ];
-
-        $request->validate($regras, $msgs);
-
+        
         $cliente = Cliente::findOrFail($id);
-        $cliente->nome = $request->nome;
-        $cliente->email = $request->email;
-        $cliente->telefone = $request->telefone;
+        if(isset($cliente)) {
+            $cliente->nome = $request->input('nome');
+            $cliente->email = $request->input('email');
+            $cliente->telefone = $request->input('telefone');
+            $cliente->save();
 
-        $cliente->save();
-
-        return redirect()->route('clientes.index');
+            return json_encode($cliente);
+        }
+        return response('Cliente nao encontrado', 404);
     }
 
     /**
@@ -130,8 +104,11 @@ class Clientes extends Controller
     public function destroy($id)
     {
         $cliente = Cliente::findOrFail($id);
-        $cliente->delete();
+        if(isset($cliente)) {
+            $cliente->delete();
+            return response('OK', 200);
+        }
 
-        return redirect()->route('clientes.index');
+        return response('Cliente não encontrado', 404);
     }
 }
